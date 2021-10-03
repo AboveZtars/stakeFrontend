@@ -26,10 +26,7 @@ const Stake = () => {
       console.log({ provider })
 			const signer = provider.getSigner()
       const UniswapLPStaking = new ethers.Contract(UniswapLPStakingAddress, UniswapLPStakingAbi, provider)
-			/* UniswapLPStaking.on("LPTokens", async (tokens, event) => {
-				event.removeListener(); // Solve memory leak with this.	
-				await console.log("when", tokens);
-			}); */
+
       try {
 				const transaction = await UniswapLPStaking.connect(signer).addAndStake(DAI,LINK,ethers.utils.parseUnits(amountStake, 18),0)
       	await transaction.wait()
@@ -62,6 +59,9 @@ const Stake = () => {
 	
   return (
 		<div>
+		<StakeContainer>
+			How many DAI do you wish to add Liquidity to uniswap and after that stake it?
+		</StakeContainer>
     <StakeContainer>
       <StakeInput
         type="text"
@@ -72,6 +72,9 @@ const Stake = () => {
       />
       <StakeButton onClick={addAndStakeFront}>Stake</StakeButton>
     </StakeContainer>
+		<StakeContainer>
+			How LP tokens do you wish to withdraw from staking?
+		</StakeContainer>
 		<StakeContainer>
 		<StakeInput
         type="text"
@@ -90,19 +93,24 @@ export default Stake;
 
 // Styles
 const StakeContainer = styled.div`
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
 `;
 
 const StakeInput = styled.input`
   padding: 0.5rem;
   width: 20rem;
+	border-radius: 5px;
 `;
 
 const StakeButton = styled.button`
   padding: 0.5rem 2rem;
   background-color: #006a4e;
   color: #e8b96b;
+	border-radius: 5px;
+	margin: 0 2px;
 `;
